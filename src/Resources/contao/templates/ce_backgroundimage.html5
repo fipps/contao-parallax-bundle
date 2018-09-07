@@ -1,0 +1,7 @@
+<?php $this->extend('block_searchable'); ?>
+
+<?php $this->block('content'); ?>
+<figure>
+	<?php $this->insert('picture_default', $this->picture); ?>
+</figure>
+<?php $this->endblock(); ?>
