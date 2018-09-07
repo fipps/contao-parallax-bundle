@@ -1,0 +1,31 @@
+# Parameters
+parameters:
+
+
+# Services
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  _instanceof:
+    Contao\CoreBundle\Framework\FrameworkAwareInterface:
+      calls:
+      - ["setFramework", ["@contao.framework"]]
+
+  Fipps\ParallaxBundle\:
+    resource: '../../*'
+    exclude: '../../{Resources,DependencyInjection,ContaoManager}/*'
+
+#  fipps_parallax.service.insert_tags:
+#    class: Fipps\ParallaxBundle\Service\InsertTagsListener
+#    arguments:
+#    - "@contao.framework"
+#    public: true
+#
+#  fipps_parallax.service.hooks:
+#    class: Fipps\ParallaxBundle\Service\HooksListener
+#    arguments:
+#    - "@contao.framework"
+#    public: true

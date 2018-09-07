@@ -1,0 +1,33 @@
+/*
+ *  Copyright Information
+ *  @copyright: 2018 agentur fipps e.K.
+ *  @author   : Arne Borchert
+ *  @license  : LGPL 3.0+
+ */
+.responsive-background-wrapper {
+    zoom: 1;
+    position: relative;
+    clear: both;
+    overflow: hidden;
+}
+
+.responsive-background-content {
+    position: relative;
+}
+
+.responsive-background-image {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: center center no-repeat;
+    background-size: cover;
+}
+
+.responsive-background-image > figure {
+    display: none;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+}
