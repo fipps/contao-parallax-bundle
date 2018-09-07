@@ -11,9 +11,7 @@ namespace Fipps\ParallaxBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Configures the Contao RSS Import Bundle
- *
- * @author Arne Borchert
+ * Configures the Bundle
  */
 class FippsParallaxBundle extends Bundle
 {
