@@ -7,7 +7,7 @@
  * @license  : LGPL 3.0+
  */
 
-namespace Fipps\ParallaxBundle\Helper;
+namespace Fipps\ParallaxBundle\DataContainer;
 
 
 class FileHelper

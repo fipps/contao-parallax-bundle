@@ -1,9 +1,10 @@
 <?php
 /**
  *  Copyright Information
- *  @copyright: 2018 agentur fipps e.K.
- *  @author   : Arne Borchert
- *  @license  : LGPL 3.0+
+ *
+ * @copyright: 2018 agentur fipps e.K.
+ * @author   : Arne Borchert
+ * @license  : LGPL 3.0+
  */
 
 namespace Fipps\ParallaxBundle\ContaoManager;
@@ -27,9 +28,7 @@ class Plugin implements BundlePluginInterface
     public function getBundles(ParserInterface $parser)
     {
         return [
-            BundleConfig::create(FippsParallaxBundle::class)
-                ->setLoadAfter([ContaoCoreBundle::class])
-                ->setReplace(['fipps_parallax'])
+            BundleConfig::create(FippsParallaxBundle::class)->setLoadAfter([ContaoCoreBundle::class]),
         ];
     }
 }

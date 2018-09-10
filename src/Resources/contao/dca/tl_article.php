@@ -40,7 +40,7 @@ $newFields = array(
             'tl_class'  => 'clr',
         ),
         'load_callback' => array(
-            array('Fipps\ParallaxBundle\Helper\FileHelper', 'setSingleSrcFlags'),
+            array('Fipps\ParallaxBundle\DataContainer\FileHelper', 'setSingleSrcFlags'),
         ),
         'sql'           => "binary(16) NULL",
     ),

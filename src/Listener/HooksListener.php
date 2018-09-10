@@ -12,22 +12,13 @@ namespace Fipps\ParallaxBundle\Listener;
 
 class HooksListener
 {
-    /**
-     * @param string $strBuffer
-     * @param string $strTemplate
-     * @return string
-     */
-    public function parseFrontendTemplate(string $strBuffer, string $strTemplate)
-    {
-        return $strBuffer;
-    }
 
     /**
      * @param \FrontendTemplate $objTemplate
      * @param array             $arrData
      * @param \Module           $objModule
      */
-    public function compileArticle(\FrontendTemplate &$objTemplate, array $arrData, \Module $objModule)
+    public function onCompileArticle(\FrontendTemplate &$objTemplate, array $arrData, \Module $objModule)
     {
         if (TL_MODE == 'FE' && $arrData['hasBackgroundImage'] == 1) {
 
@@ -57,19 +48,9 @@ class HooksListener
     }
 
     /**
-     * @param \FrontendTemplate $objTemplate
-     * @param array             $arrRow
-     * @param \Module           $objModule
-     */
-    public function parseArticles(\FrontendTemplate $objTemplate, array $arrRow, \Module $objModule)
-    {
-        return;
-    }
-
-    /**
      * @param \Template $objTemplate
      */
-    public function parseTemplate(\Template $objTemplate)
+    public function onParseTemplate(\Template $objTemplate)
     {
         if (TL_MODE == 'FE' && $objTemplate->getName() == 'ce_backgroundimage') {
             $arrClasses = array('responsive-background-image');
