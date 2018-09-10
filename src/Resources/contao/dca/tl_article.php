@@ -40,7 +40,7 @@ $newFields = array(
             'tl_class'  => 'clr',
         ),
         'load_callback' => array(
-            array('Fipps\ParallaxBundle\Helper\FileHelper', 'setSingleSrcFlags'),
+            array('Fipps\ParallaxBundle\DataContainer\FileHelper', 'setSingleSrcFlags'),
         ),
         'sql'           => "binary(16) NULL",
     ),
@@ -78,7 +78,7 @@ $newFields = array(
         'exclude'   => true,
         'inputType' => 'checkbox',
         'eval'      => array(
-            'tl_class' => 'w50 m12',
+            'tl_class' => 'clr w50 m12',
         ),
         'sql'       => "char(1) NOT NULL default ''",
     ),

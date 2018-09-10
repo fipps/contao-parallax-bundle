@@ -9,13 +9,13 @@
 namespace Fipps\ParallaxBundle\Listener;
 
 
-use Contao\CoreBundle\Framework\ContaoFramework;
+use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
 
 class InsertTagsListener
 {
 
     /**
-     * @var ContaoFramework
+     * @var ContaoFrameworkInterface
      */
     private $framework;
 
@@ -27,9 +27,9 @@ class InsertTagsListener
     /**
      * Constructor.
      *
-     * @param ContaoFramework $framework
+     * @param ContaoFrameworkInterface $framework
      */
-    public function __construct(ContaoFramework $framework)
+    public function __construct(ContaoFrameworkInterface $framework)
     {
         $this->framework = $framework;
     }
