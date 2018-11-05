@@ -9,7 +9,7 @@ class BackgroundImage {
         this.img = listOfImages[0];
         this.src = '';
         this.currentBackgroundImage = this;
-        $(this.img).load(this.update());
+        $(this.img).on('load', this.update());
 
     }
 
@@ -77,7 +77,7 @@ class BackgroundImage {
 
 }
 
-$(window).load(function () {
+$(window).on('load', function () {
     let backgroundElements = $('.responsive-background-image');
     backgroundElements.each(function () {
             let backgroundImage = new BackgroundImage(this);
