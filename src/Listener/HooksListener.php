@@ -14,14 +14,36 @@ class HooksListener
 {
 
     /**
+     * Add all necessary JS and CSS
+     *
+     * @param \PageModel   $objPage
+     * @param \LayoutModel $objLayout
+     * @param \PageRegular $objPageRegular
+     */
+    public function onGetPageLayout(\PageModel $objPage, \LayoutModel $objLayout, \PageRegular $objPageRegular)
+    {
+        if (\Config::get('debugMode')) {
+            if (!$objLayout->addJQuery) {
+                $GLOBALS['TL_JAVASCRIPT'][] = 'assets/jquery/js/jquery.js|static';
+            }
+            $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/fippsparallax/js/parallax.min.js|async';
+            $GLOBALS['TL_CSS'][]        = 'bundles/fippsparallax/css/parallax.min.css';
+        } else {
+            if (!$objLayout->addJQuery) {
+                $GLOBALS['TL_JAVASCRIPT'][] = 'assets/jquery/js/jquery.min.js|static';
+            }
+            $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/fippsparallax/js/parallax.js|async';
+            $GLOBALS['TL_CSS'][]        = 'bundles/fippsparallax/css/parallax.css';
+        }
+    }
+
+    /**
      * @param \FrontendTemplate $objTemplate
      * @param array             $arrData
-     * @param \Module           $objModule
      */
-    public function onCompileArticle(\FrontendTemplate &$objTemplate, array $arrData, \Module $objModule)
+    public function onCompileArticle(\FrontendTemplate &$objTemplate, array $arrData)
     {
         if (TL_MODE == 'FE' && $arrData['hasBackgroundImage'] == 1) {
-
             $file = \FilesModel::findByUuid($arrData['singleSRC']);
             if ($file === null) {
                 return;
@@ -29,21 +51,11 @@ class HooksListener
             $arrData['singleSRC']    = $file->path;
             $templateBackgroundImage = new \FrontendTemplate('ce_backgroundimage');
             \Controller::addImageToTemplate($templateBackgroundImage, $arrData);
-            $templateBackgroundImage->isParallax = $arrData['isParallax'];
-            $templateBackgroundImage->hAlign = $arrData['hAlign'];
+            $templateBackgroundImage->hAlign = ($arrData['hAlign'] != '') ?: 'center';
 
-            $arrElements = array();
-            $arrElements[] = '<div class="responsive-background-wrapper">';
-            $arrElements[] = $templateBackgroundImage->parse();
-            $arrElements[] = '<div class="responsive-background-content">';
-            $arrElements    = array_merge($arrElements, $objTemplate->elements);
-            $arrElements[]  = '</div>';
-            $arrElements[]  = '</div>';
-
-            $objTemplate->elements = $arrElements;
-
-            $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/fippsparallax/js/parallax.js|async';
-            $GLOBALS['TL_CSS'][]        = 'bundles/fippsparallax/css/parallax.css';
+            $elements = $objTemplate->elements;
+            array_unshift($elements, $templateBackgroundImage->parse());
+            $objTemplate->elements = $elements;
         }
     }
 
@@ -52,16 +64,12 @@ class HooksListener
      */
     public function onParseTemplate(\Template $objTemplate)
     {
-        if (TL_MODE == 'FE' && $objTemplate->getName() == 'ce_backgroundimage') {
-            $arrClasses = array('responsive-background-image');
+        if (TL_MODE == 'FE' && $objTemplate->type == 'article' && $objTemplate->hasBackgroundImage == 1) {
+            $arrClasses = array('has-responsive-background-image');
             if ($objTemplate->isParallax == 1) {
-                $arrClasses[] = 'parallax-image';
-
+                $arrClasses[] = 'parallax';
             }
             $objTemplate->class = implode(' ', $arrClasses);
-            if (isset($objTemplate->hAlign)) {
-                $objTemplate->style = 'background-position:'.$objTemplate->hAlign.' center';
-            }
         }
     }
 }

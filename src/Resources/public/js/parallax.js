@@ -1,93 +1,80 @@
-class BackgroundImage {
+$(document).ready(function(){
 
-    constructor(object) {
-        this.objBackground = $(object);
-        let listOfImages = this.objBackground.find('img');
-        if (listOfImages.length == 0) {
-            return null;
-        }
-        this.img = listOfImages[0];
-        this.src = '';
-        this.currentBackgroundImage = this;
-        $(this.img).on('load', this.update());
+    (function(){
 
-    }
+        if(!('requestAnimationFrame' in window)) return;
+        if(/Mobile|Android/.test(navigator.userAgent)) return;
 
-    waitForImageLoaded(object) {
-        if (!object.img.complete) {
-            setTimeout(function () {
-                object.waitForImageLoaded(object)
-            }, 100)
-        } else {
-            return;
-        }
+        var backgrounds = [];
 
-    }
+        $('.has-responsive-background-image').each(function(){
+            var el = $(this);
+            var bg = $('<div>');
 
-    update() {
+            var src = el.find('img').prop('currentSrc');
+            var hAlign = el.find('figure').data('align');
 
-        this.waitForImageLoaded(this.currentBackgroundImage);
-        let src = this.img.src;
-        if (this.img.currentSrc != '') {
-            src = this.img.currentSrc;
-        }
-
-        if (this.src !== src) {
-            this.src = src;
-            this.objBackground.css("background-image", 'url(' + this.src + ')');
-        }
-
-        this.parallax();
-    }
-
-    parallax() {
-        // Only if parallax is activated by class 'parallax-image'
-        if (this.objBackground.hasClass('parallax-image')) {
-            let windowHeight = window.innerHeight || document.documentElement.clientHeight;
-            let position, height;
-
-            // Get all dimensions from the browser before applying styles for better performance
-            let parent = this.objBackground.parent();
-            // Use array for "getBoundingClientRect()" in jQuery
-            let parentCoords = parent[0].getBoundingClientRect();
-            if (!('height' in parentCoords) || !('top' in parentCoords) || !('bottom' in parentCoords)) {
-                return;
-            }
-
-            // Skip Element out of canvas
-            if (parentCoords.bottom < 0 || parentCoords.top > windowHeight) {
-                return;
-            }
-
-            // Calculate position
-            height = Math.round(Math.max(0, Math.min(parentCoords.height, windowHeight) * 1.1));
-            this.objBackground.css('bottom', 'auto');
-            this.objBackground.css('height', height + 'px');
-            if (height < windowHeight || (windowHeight < parentCoords.height && height < parentCoords.height)) {
-                position = parentCoords.top / (windowHeight - parentCoords.height) * -(height - parentCoords.height);
-            } else {
-                position = (windowHeight - parentCoords.top) / (windowHeight + parentCoords.height) * -(height - parentCoords.height);
-            }
-
-            // Set position
-            this.objBackground.css('-webkit-transform', 'translate3d(0, ' + Math.round(position) + 'px, 0)');
-            this.objBackground.css('transform', 'translate3d(0, ' + Math.round(position) + 'px, 0)');
-        }
-    }
-
-}
-
-$(window).on('load', function () {
-    let backgroundElements = $('.responsive-background-image');
-    backgroundElements.each(function () {
-            let backgroundImage = new BackgroundImage(this);
-            $(window).scroll(function () {
-                backgroundImage.parallax();
+            bg.css({
+                backgroundImage: 'url(' + src + ')',
+                backgroundPositionX: hAlign
             });
-            $(window).resize(function () {
-                backgroundImage.update();
-            });
+            bg.addClass('bgImage');
+
+            bg.appendTo(el);
+            backgrounds.push(bg[0]);
+
+        });
+
+        if(!backgrounds.length) return;
+
+        var visible = [];
+        var scheduled;
+
+        $(window).on('scroll resize', scroll);
+
+        scroll();
+
+        function scroll(){
+
+            visible.length = 0;
+
+            for(var i = 0; i < backgrounds.length; i++){
+                var parent = backgrounds[i].parentNode;
+                var src = $(parent).find('img').prop('currentSrc');
+                $(backgrounds[i]).css("background-image", "url('" + src + "')");
+
+                if ($(parent).hasClass('parallax')) {
+                    var rect = parent.getBoundingClientRect();
+                    if (rect.bottom > 0 && rect.top < window.innerHeight) {
+                        visible.push({
+                            rect: rect,
+                            node: backgrounds[i]
+                        });
+                    }
+                }
+
+            }
+
+            cancelAnimationFrame(scheduled);
+
+            if(visible.length){
+                scheduled = requestAnimationFrame(update);
+            }
 
         }
-    )
+
+        function update(){
+
+            for(var i = 0; i < visible.length; i++){
+                var rect = visible[i].rect;
+                var node = visible[i].node;
+
+                var quot = Math.max(rect.bottom, 0) / (window.innerHeight + rect.height);
+
+                node.style.transform = 'translate3d(0, '+(-50*quot)+'%, 0)';
+            }
+
+        }
+
+    })();
 });
