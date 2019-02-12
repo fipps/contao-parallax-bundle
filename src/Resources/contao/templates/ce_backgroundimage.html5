@@ -1,7 +1,6 @@
-<?php $this->extend('block_searchable'); ?>
-
-<?php $this->block('content'); ?>
-<figure>
+<figure style="display: none;
+    width: 0;
+    height: 0;
+    overflow: hidden;" data-align="<?= $this->hAlign?>">
 	<?php $this->insert('picture_default', $this->picture); ?>
 </figure>
-<?php $this->endblock(); ?>
