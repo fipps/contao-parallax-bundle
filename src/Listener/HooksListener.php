@@ -26,14 +26,14 @@ class HooksListener
             if (!$objLayout->addJQuery) {
                 $GLOBALS['TL_JAVASCRIPT'][] = 'assets/jquery/js/jquery.js|static';
             }
-            $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/fippsparallax/js/parallax.min.js|async';
-            $GLOBALS['TL_CSS'][]        = 'bundles/fippsparallax/css/parallax.min.css';
+            $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/fippsparallax/js/parallax.js|async';
+            $GLOBALS['TL_CSS'][]        = 'bundles/fippsparallax/css/parallax.css';
         } else {
             if (!$objLayout->addJQuery) {
                 $GLOBALS['TL_JAVASCRIPT'][] = 'assets/jquery/js/jquery.min.js|static';
             }
-            $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/fippsparallax/js/parallax.js|async';
-            $GLOBALS['TL_CSS'][]        = 'bundles/fippsparallax/css/parallax.css';
+            $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/fippsparallax/js/parallax.min.js|async';
+            $GLOBALS['TL_CSS'][]        = 'bundles/fippsparallax/css/parallax.min.css';
         }
     }
 
@@ -51,7 +51,7 @@ class HooksListener
             $arrData['singleSRC']    = $file->path;
             $templateBackgroundImage = new \FrontendTemplate('ce_backgroundimage');
             \Controller::addImageToTemplate($templateBackgroundImage, $arrData);
-            $templateBackgroundImage->hAlign = ($arrData['hAlign'] != '') ?: 'center';
+            $templateBackgroundImage->hAlign = ($arrData['hAlign'] != '') ? $arrData['hAlign'] : 'center';
 
             $elements = $objTemplate->elements;
             array_unshift($elements, $templateBackgroundImage->parse());

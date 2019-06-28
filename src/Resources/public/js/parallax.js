@@ -6,13 +6,14 @@ $(document).ready(function(){
         if(/Mobile|Android/.test(navigator.userAgent)) return;
 
         var backgrounds = [];
+        var hAlign
 
         $('.has-responsive-background-image').each(function(){
             var el = $(this);
             var bg = $('<div>');
 
             var src = el.find('img').prop('currentSrc');
-            var hAlign = el.find('figure').data('align');
+            hAlign = el.find('figure').data('align');
 
             bg.css({
                 backgroundImage: 'url(' + src + ')',
@@ -39,16 +40,46 @@ $(document).ready(function(){
             visible.length = 0;
 
             for(var i = 0; i < backgrounds.length; i++){
-                var parent = backgrounds[i].parentNode;
-                var src = $(parent).find('img').prop('currentSrc');
-                $(backgrounds[i]).css("background-image", "url('" + src + "')");
+                var bg = backgrounds[i];
+                var parent = bg.parentNode;
+                var img = $(parent).find('img');
+                var w = img.width();
+                var h = img.height();
+                var src = img.prop('currentSrc');
+
+                var scaleW = 1;
+                var scaleH = 1;
+                var scale = 1;
+                $(bg).css("background-image", "url('" + src + "')");
 
                 if ($(parent).hasClass('parallax')) {
                     var rect = parent.getBoundingClientRect();
                     if (rect.bottom > 0 && rect.top < window.innerHeight) {
+
+                        scaleW = rect.width / w;
+                        scaleH = rect.height / h;
+                        scale = Math.min(scaleW, scaleH);
+
+                        if (h * scale < rect.height) {
+                            scale = rect.height / ( h * scale);
+                            switch (hAlign) {
+                                case 'left':
+                                    left: 0;
+                                case 'right':
+                                    left: -(scale-1) * 100;
+                                default:
+                                    left = -(scale-1) / 2 * 100;
+                            }
+
+                            $(bg).css({
+                                width: scale*100 + '%',
+                                left: left + '%'
+                            });
+                        }
+
                         visible.push({
                             rect: rect,
-                            node: backgrounds[i]
+                            node: bg
                         });
                     }
                 }
