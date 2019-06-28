@@ -7,7 +7,7 @@ services:
   _defaults:
     autowire: true
     autoconfigure: true
-    public: false
+    public: true
 
   _instanceof:
     Contao\CoreBundle\Framework\FrameworkAwareInterface:
