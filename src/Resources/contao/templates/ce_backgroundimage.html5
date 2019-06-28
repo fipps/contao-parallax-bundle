@@ -1,6 +1,8 @@
-<figure style="display: none;
-    width: 0;
-    height: 0;
-    overflow: hidden;" data-align="<?= $this->hAlign?>">
+<figure style="z-index: -200;
+			position: absolute;
+			width: 0;
+			height: 0;
+			overflow: hidden;" 
+		data-align="<?= $this->hAlign?>">
 	<?php $this->insert('picture_default', $this->picture); ?>
 </figure>
