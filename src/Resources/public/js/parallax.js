@@ -1,14 +1,14 @@
-$(document).ready(function(){
+$(document).ready(function () {
 
-    (function(){
+    (function () {
 
-        if(!('requestAnimationFrame' in window)) return;
-        if(/Mobile|Android/.test(navigator.userAgent)) return;
+        if (!('requestAnimationFrame' in window)) return;
+        //if(/Mobile|Android/.test(navigator.userAgent)) return;
 
         var backgrounds = [];
-        var hAlign
+        var hAlign;
 
-        $('.has-responsive-background-image').each(function(){
+        $('.has-responsive-background-image').each(function () {
             var el = $(this);
             var bg = $('<div>');
 
@@ -26,25 +26,29 @@ $(document).ready(function(){
 
         });
 
-        if(!backgrounds.length) return;
+        if (!backgrounds.length) return;
 
         var visible = [];
         var scheduled;
 
-        $(window).on('scroll resize', scroll);
-
         scroll();
 
-        function scroll(){
+        $(window).on('scroll resize', scroll);
+
+        //Workaround to calculate correct position
+        var pos = $(document).scrollTop();
+        $(document).scrollTop(pos + 10);
+
+        function scroll() {
 
             visible.length = 0;
 
-            for(var i = 0; i < backgrounds.length; i++){
+            for (var i = 0; i < backgrounds.length; i++) {
                 var bg = backgrounds[i];
                 var parent = bg.parentNode;
                 var img = $(parent).find('img');
-                var w = img.width();
-                var h = img.height();
+                var w = img.prop('naturalWidth');
+                var h = img.prop('naturalHeight');
                 var src = img.prop('currentSrc');
 
                 var scaleW = 1;
@@ -61,18 +65,19 @@ $(document).ready(function(){
                         scale = Math.min(scaleW, scaleH);
 
                         if (h * scale < rect.height) {
-                            scale = rect.height / ( h * scale);
+                            scale = rect.height / (h * scale);
+                            var left;
                             switch (hAlign) {
                                 case 'left':
-                                    left: 0;
+                                    left = 0;
                                 case 'right':
-                                    left: -(scale-1) * 100;
+                                    left = -(scale - 1) * 100;
                                 default:
-                                    left = -(scale-1) / 2 * 100;
+                                    left = -(scale - 1) / 2 * 100;
                             }
 
                             $(bg).css({
-                                width: scale*100 + '%',
+                                width: scale * 100 + '%',
                                 left: left + '%'
                             });
                         }
@@ -83,29 +88,26 @@ $(document).ready(function(){
                         });
                     }
                 }
-
             }
 
             cancelAnimationFrame(scheduled);
 
-            if(visible.length){
+            if (visible.length) {
                 scheduled = requestAnimationFrame(update);
             }
-
         }
 
-        function update(){
+        function update() {
+            pos = $(window).scrollTop();
 
-            for(var i = 0; i < visible.length; i++){
+            for (var i = 0; i < visible.length; i++) {
                 var rect = visible[i].rect;
                 var node = visible[i].node;
 
                 var quot = Math.max(rect.bottom, 0) / (window.innerHeight + rect.height);
 
-                node.style.transform = 'translate3d(0, '+(-50*quot)+'%, 0)';
+                node.style.transform = 'translate3d(0, ' + (-50 * quot) + '%, 0)';
             }
-
         }
-
     })();
 });
