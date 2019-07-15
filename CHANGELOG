@@ -1,3 +1,8 @@
+v1.2.0
+fix: image calculation
+fix: js bugs
+fix: no deactivation for mobile devices
+
 v1.1.1
 fix: styles
 
