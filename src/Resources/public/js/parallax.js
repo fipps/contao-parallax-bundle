@@ -3,17 +3,16 @@ $(document).ready(function () {
     (function () {
 
         if (!('requestAnimationFrame' in window)) return;
-        //if(/Mobile|Android/.test(navigator.userAgent)) return;
 
         var backgrounds = [];
-        var hAlign;
 
         $('.has-responsive-background-image').each(function () {
             var el = $(this);
             var bg = $('<div>');
 
             var src = el.find('img').prop('currentSrc');
-            hAlign = el.find('figure').data('align');
+            var noMobile = el.find('figure').data('nomobile');
+            var hAlign = el.find('figure').data('align');
 
             bg.css({
                 backgroundImage: 'url(' + src + ')',
@@ -23,6 +22,11 @@ $(document).ready(function () {
 
             bg.appendTo(el);
             backgrounds.push(bg[0]);
+
+            if (/Mobile|Android/.test(navigator.userAgent)  && noMobile == 1) {
+                el.removeClass('parallax');
+                return;
+            }
 
         });
 
@@ -47,13 +51,14 @@ $(document).ready(function () {
                 var bg = backgrounds[i];
                 var parent = bg.parentNode;
                 var img = $(parent).find('img');
+                var hAlign = $(parent).find('figure').data('align');
                 var w = img.prop('naturalWidth');
                 var h = img.prop('naturalHeight');
                 var src = img.prop('currentSrc');
 
                 var scaleW = 1;
                 var scaleH = 1;
-                var scale = 1;
+                var scaleB = 1;
                 $(bg).css("background-image", "url('" + src + "')");
 
                 if ($(parent).hasClass('parallax')) {
@@ -62,24 +67,22 @@ $(document).ready(function () {
 
                         scaleW = rect.width / w;
                         scaleH = rect.height / h;
-                        scale = Math.min(scaleW, scaleH);
+                        scaleB = Math.min(scaleW, scaleH);
+                        if (scaleH > 1 || scaleW > 1) {
+                            scaleB = Math.max(scaleW, scaleH);
+                        }
 
-                        if (h * scale < rect.height) {
-                            scale = rect.height / (h * scale);
-                            var left;
-                            switch (hAlign) {
-                                case 'left':
-                                    left = 0;
-                                case 'right':
-                                    left = -(scale - 1) * 100;
-                                default:
-                                    left = -(scale - 1) / 2 * 100;
-                            }
+                        if (scaleB > 1) {
+                            scale($(bg), hAlign, scaleB)
+                        }
 
-                            $(bg).css({
-                                width: scale * 100 + '%',
-                                left: left + '%'
-                            });
+                        if (h * scaleB < rect.height) {
+                            scaleB = rect.height / (h * scaleB);
+                            scale($(bg), hAlign, scaleB)
+                        }
+                        if (h * scaleB > 2 * rect.height) {
+                            scaleH = h * scaleB / (2 * rect.height);
+                            scale($(bg), hAlign, scaleB, scaleH)
                         }
 
                         visible.push({
@@ -109,5 +112,29 @@ $(document).ready(function () {
                 node.style.transform = 'translate3d(0, ' + (-50 * quot) + '%, 0)';
             }
         }
+
+        function scale(el, hAlign, scaleW, scaleH = 0) {
+            var left;
+            switch (hAlign) {
+                case 'left':
+                    left = 0;
+                case 'right':
+                    left = -(scaleW - 1) * 100;
+                default:
+                    left = -(scaleW - 1) / 2 * 100;
+            }
+
+            el.css({
+                width: scaleW * 100 + '%',
+                left: left + '%'
+            });
+
+            if (scaleH > 0) {
+                el.css({
+                    height: scaleH * 200 + '%'
+                });
+            }
+
+        };
     })();
 });

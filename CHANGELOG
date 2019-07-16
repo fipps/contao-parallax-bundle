@@ -1,3 +1,7 @@
+v1.3.0
+new: optional deactivate for mobile devices
+fix: image calculation
+
 v1.2.0
 fix: image calculation
 fix: js bugs
