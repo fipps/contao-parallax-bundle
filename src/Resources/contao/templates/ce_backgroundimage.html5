@@ -3,6 +3,7 @@
 			width: 0;
 			height: 0;
 			overflow: hidden;" 
-		data-align="<?= $this->hAlign?>">
+		data-align="<?= $this->hAlign?>"
+		data-nomobile="<?= $this->deactivateForMobile?>">
 	<?php $this->insert('picture_default', $this->picture); ?>
 </figure>

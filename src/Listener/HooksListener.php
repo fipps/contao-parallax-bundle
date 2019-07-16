@@ -52,6 +52,7 @@ class HooksListener
             $templateBackgroundImage = new \FrontendTemplate('ce_backgroundimage');
             \Controller::addImageToTemplate($templateBackgroundImage, $arrData);
             $templateBackgroundImage->hAlign = ($arrData['hAlign'] != '') ? $arrData['hAlign'] : 'center';
+            $templateBackgroundImage->deactivateForMobile = ($arrData['deactivateForMobile'] != '') ? $arrData['deactivateForMobile'] : '0';
 
             $elements = $objTemplate->elements;
             array_unshift($elements, $templateBackgroundImage->parse());

@@ -16,7 +16,7 @@
 }
 
 .has-responsive-background-image .bgImage {
-    background-size: contain;
+    background-size: cover;
     position: absolute;
     top:0;
     left:0;
@@ -27,6 +27,7 @@
     background-repeat: no-repeat;
 }
 
-.parallax .bgImage {
+.has-responsive-background-image.parallax .bgImage {
+    background-size: contain;
     height:200%;
 }

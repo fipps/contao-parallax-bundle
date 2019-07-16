@@ -15,13 +15,14 @@ $newLegend = '{backgroundimage_legend:hide},hasBackgroundImage;';
 
 $DCA['palettes']['default']        = str_replace('{syndication_legend', $newLegend.'{syndication_legend', $DCA['palettes']['default']);
 $DCA['palettes']['__selector__'][] = 'hasBackgroundImage';
+$DCA['palettes']['__selector__'][] = 'isParallax';
 
 $DCA['subpalettes']['hasBackgroundImage'] = 'singleSRC,size,hAlign,isParallax';
-
+$DCA['subpalettes']['isParallax']         = "deactivateForMobile";
 
 // New fields
 $newFields = array(
-    'hasBackgroundImage' => array(
+    'hasBackgroundImage'  => array(
         'label'     => &$GLOBALS['TL_LANG']['tl_article']['hasBackgroundImage'],
         'exclude'   => true,
         'inputType' => 'checkbox',
@@ -30,7 +31,7 @@ $newFields = array(
         ),
         'sql'       => "char(1) NOT NULL default ''",
     ),
-    'singleSRC'          => array(
+    'singleSRC'           => array(
         'label'         => &$GLOBALS['TL_LANG']['tl_content']['singleSRC'],
         'exclude'       => true,
         'inputType'     => 'fileTree',
@@ -44,7 +45,7 @@ $newFields = array(
         ),
         'sql'           => "binary(16) NULL",
     ),
-    'size'               => array(
+    'size'                => array(
         'label'            => &$GLOBALS['TL_LANG']['tl_content']['size'],
         'exclude'          => true,
         'inputType'        => 'imageSize',
@@ -61,7 +62,7 @@ $newFields = array(
         },
         'sql'              => "varchar(64) NOT NULL default ''",
     ),
-    'hAlign'             => array(
+    'hAlign'              => array(
         'label'     => &$GLOBALS['TL_LANG']['tl_article']['hAlign'],
         'exclude'   => true,
         'inputType' => 'select',
@@ -73,15 +74,27 @@ $newFields = array(
         'sql'       => "varchar(64) NOT NULL default ''",
 
     ),
-    'isParallax'         => array(
+    'isParallax'          => array(
         'label'     => &$GLOBALS['TL_LANG']['tl_article']['isParallax'],
         'exclude'   => true,
         'inputType' => 'checkbox',
         'eval'      => array(
-            'tl_class' => 'clr w50 m12',
+            'tl_class'       => 'clr w50 m12',
+            'submitOnChange' => true,
+
         ),
         'sql'       => "char(1) NOT NULL default ''",
     ),
+    'deactivateForMobile' => array(
+        'label'     => &$GLOBALS['TL_LANG']['tl_article']['deactivateForMobile'],
+        'exclude'   => true,
+        'inputType' => 'checkbox',
+        'eval'      => array(
+            'tl_class' => 'w50 m12',
+        ),
+        'sql'       => "char(1) NOT NULL default ''",
+    ),
+
 );
 
 $DCA['fields'] = array_merge($DCA['fields'], $newFields);
