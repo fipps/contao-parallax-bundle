@@ -34,3 +34,8 @@ $GLOBALS['TL_LANG']['tl_article']['hAlignOptions'] = array(
     'center' => 'zentriert',
     'right'  => 'rechts',
 );
+$GLOBALS['TL_LANG']['tl_article']['vAlignOptions'] = array(
+    'top'   => 'oben',
+    'center' => 'mittig',
+    'bottom'  => 'unten',
+);

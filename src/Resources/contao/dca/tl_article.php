@@ -17,7 +17,7 @@ $DCA['palettes']['default']        = str_replace('{syndication_legend', $newLege
 $DCA['palettes']['__selector__'][] = 'hasBackgroundImage';
 $DCA['palettes']['__selector__'][] = 'isParallax';
 
-$DCA['subpalettes']['hasBackgroundImage'] = 'singleSRC,size,hAlign,isParallax';
+$DCA['subpalettes']['hasBackgroundImage'] = 'singleSRC,size,hAlign,vAlign,isParallax';
 $DCA['subpalettes']['isParallax']         = "deactivateForMobile";
 
 // New fields
@@ -67,6 +67,18 @@ $newFields = array(
         'exclude'   => true,
         'inputType' => 'select',
         'options'   => &$GLOBALS['TL_LANG']['tl_article']['hAlignOptions'],
+        'eval'      => array(
+            'includeBlankOption' => true,
+            'tl_class'           => 'clr w50',
+        ),
+        'sql'       => "varchar(64) NOT NULL default ''",
+
+    ),
+    'vAlign'              => array(
+        'label'     => &$GLOBALS['TL_LANG']['tl_article']['vAlign'],
+        'exclude'   => true,
+        'inputType' => 'select',
+        'options'   => &$GLOBALS['TL_LANG']['tl_article']['vAlignOptions'],
         'eval'      => array(
             'includeBlankOption' => true,
             'tl_class'           => 'w50',
