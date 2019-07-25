@@ -5,7 +5,6 @@ $(document).ready(function () {
         if (!('requestAnimationFrame' in window)) return;
 
         var backgrounds = [];
-        var aHAlign = ['left', 'right'];
         var aVAlign = ['top', 'bottom'];
 
         $('.has-responsive-background-image').each(function () {
@@ -14,14 +13,17 @@ $(document).ready(function () {
 
             var src = el.find('img').prop('currentSrc');
             var noMobile = el.find('figure').data('nomobile');
-            var hAlign = checkAlign(el.find('figure').data('halign'), aHAlign);
-            var vAlign = checkAlign(el.find('figure').data('valign'), aVAlign);
+            var hAlign = checkAlign(el.find('figure').data('halign'));
+            var vAlign = checkAlign(el.find('figure').data('valign'));
+            if (isNaN(valign)) {
+                vAlign = 50;
+            }
 
 
             bg.css({
                 backgroundImage: 'url(' + src + ')',
-                backgroundPositionX: hAlign,
-                backgroundPositionY: vAlign
+                backgroundPositionX: hAlign + '%',
+                backgroundPositionY: vAlign + '%'
             });
             bg.addClass('bgImage');
 
@@ -58,30 +60,18 @@ $(document).ready(function () {
 
                 $(backgrounds[i]).css("background-image", "url('" + src + "')");
 
-
-
                 if ($(parent).hasClass('parallax')) {
                     var rect = parent.getBoundingClientRect();
                     var img = $(parent).find('img');
-                    var vAlign = checkAlign($(parent).find('figure').data('valign'), aVAlign);
+                    var vAlign = checkAlign($(parent).find('figure').data('valign'));
                     var h = img.prop('naturalHeight');
 
                     if (rect.bottom > 0 && rect.top < window.innerHeight) {
-                        var positionY;
-                        switch (vAlign) {
-                            case 'top':
-                                positionY = 1.4*rect.height - h;
-                                $(backgrounds[i]).css({
-                                    backgroundPositionY: positionY + 'px'
-                                });
-                                break;
-                            case 'bottom':
-                                positionY = 1.4*rect.height - h;
-                                $(backgrounds[i]).css({
-                                    backgroundPositionY: -positionY + 'px'
-                                });
-                                break;
-                        }
+                        var faktor = (50 - vAlign) / 50;
+                        var positionY = (1.4 * rect.height - h) * faktor;
+                        $(backgrounds[i]).css({
+                            backgroundPositionY: positionY + 'px'
+                        });
 
                         visible.push({
                             rect: rect,
@@ -100,10 +90,11 @@ $(document).ready(function () {
 
         }
 
-        function checkAlign(align, array) {
-            if (array.indexOf(align) == -1) {
-                return 'center';
+        function checkAlign(align) {
+            if (isNaN(align)) {
+                align = 50;
             }
+
             return align;
         }
 
