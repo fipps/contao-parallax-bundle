@@ -60,11 +60,14 @@ $(document).ready(function () {
                     var rect = parent.getBoundingClientRect();
                     var img = $(parent).find('img');
                     var vAlign = checkAlign($(parent).find('figure').data('valign'));
-                    var h = img.prop('naturalHeight');
+                    var imgh = img.prop('naturalHeight');
 
                     if (rect.bottom > 0 && rect.top < window.innerHeight) {
-                        var faktor = (50 - vAlign) / 50;
-                        var positionY = (1.4 * rect.height - h) * faktor;
+                        var faktor = (100 - vAlign) / 100;
+                        var bgh = $(backgrounds[i]).height();
+                        bgh = Math.max(bgh, imgh);
+                        var positionY = (bgh - rect.height) / 2 * faktor  ;
+
                         $(backgrounds[i]).css({
                             backgroundPositionY: positionY + 'px'
                         });
