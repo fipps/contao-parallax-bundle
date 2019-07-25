@@ -65,8 +65,24 @@ $newFields = array(
     'hAlign'              => array(
         'label'     => &$GLOBALS['TL_LANG']['tl_article']['hAlign'],
         'exclude'   => true,
+        'inputType' => 'text ',
+        'default'   => 50,
+        //'options'   => &$GLOBALS['TL_LANG']['tl_article']['hAlignOptions'],
+        'eval'      => array(
+            //'includeBlankOption' => true,
+            'tl_class' => 'clr w50',
+            'maxval'   => 200,
+            'minval'   => -100,
+            'rgxp'     => 'digit',
+        ),
+        'sql'       => "int(4) NOT NULL default '50'",
+
+    ),
+    'vAlign'              => array(
+        'label'     => &$GLOBALS['TL_LANG']['tl_article']['vAlign'],
+        'exclude'   => true,
         'inputType' => 'select',
-        'options'   => &$GLOBALS['TL_LANG']['tl_article']['hAlignOptions'],
+        'options'   => &$GLOBALS['TL_LANG']['tl_article']['vAlignOptions'],
         'eval'      => array(
             'includeBlankOption' => true,
             'tl_class'           => 'clr w50',

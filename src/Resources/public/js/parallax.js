@@ -5,8 +5,8 @@ $(document).ready(function () {
         if (!('requestAnimationFrame' in window)) return;
 
         var backgrounds = [];
-        var aHAlign = ['left','right'];
-        var aVAlign = ['top','bottom'];
+        var aHAlign = ['left', 'right'];
+        var aVAlign = ['top', 'bottom'];
 
         $('.has-responsive-background-image').each(function () {
             var el = $(this);
@@ -14,8 +14,9 @@ $(document).ready(function () {
 
             var src = el.find('img').prop('currentSrc');
             var noMobile = el.find('figure').data('nomobile');
-            var hAlign = checkAlign(el.find('figure').data('halign'),aHAlign);
+            var hAlign = checkAlign(el.find('figure').data('halign'), aHAlign);
             var vAlign = checkAlign(el.find('figure').data('valign'), aVAlign);
+
 
             bg.css({
                 backgroundImage: 'url(' + src + ')',
@@ -27,10 +28,11 @@ $(document).ready(function () {
             bg.appendTo(el);
             backgrounds.push(bg[0]);
 
-            if (/Mobile|Android/.test(navigator.userAgent)  && noMobile == 1) {
+            if (/Mobile|Android/.test(navigator.userAgent) && noMobile == 1) {
                 el.removeClass('parallax');
                 return;
             }
+
 
         });
 
@@ -39,10 +41,9 @@ $(document).ready(function () {
         var visible = [];
         var scheduled;
 
-        scroll();
-
         $(window).on('scroll resize', scroll);
 
+        scroll();
         //Workaround to calculate correct position
         var pos = $(document).scrollTop();
         $(document).scrollTop(pos + 10);
@@ -52,50 +53,43 @@ $(document).ready(function () {
             visible.length = 0;
 
             for (var i = 0; i < backgrounds.length; i++) {
-                var bg = backgrounds[i];
-                var parent = bg.parentNode;
-                var img = $(parent).find('img');
-                var hAlign = checkAlign($(parent).find('figure').data('halign'),aHAlign);
-                var vAlign = checkAlign($(parent).find('figure').data('valign'), aVAlign);
-                var w = img.prop('naturalWidth');
-                var h = img.prop('naturalHeight');
-                var src = img.prop('currentSrc');
+                var parent = backgrounds[i].parentNode;
+                var src = $(parent).find('img').prop('currentSrc');
 
-                var scaleW = 1;
-                var scaleH = 1;
-                var scaleB = 1;
-                $(bg).css("background-image", "url('" + src + "')");
+                $(backgrounds[i]).css("background-image", "url('" + src + "')");
 
 
 
                 if ($(parent).hasClass('parallax')) {
                     var rect = parent.getBoundingClientRect();
-                    if (rect.bottom > 0 && rect.top < window.innerHeight) {
+                    var img = $(parent).find('img');
+                    var vAlign = checkAlign($(parent).find('figure').data('valign'), aVAlign);
+                    var h = img.prop('naturalHeight');
 
-                        scaleW = rect.width / w;
-                        scaleH = rect.height / h;
-                        scaleB = Math.min(scaleW, scaleH);
-                        if (scaleH > 1 || scaleW > 1) {
-                            scaleB = Math.max(scaleW, scaleH);
-                        }
-                        if (scaleB > 1) {
-                            scale($(bg), hAlign, vAlign, h, scaleB, scaleH)
-                        }
-                        if (h * scaleB < rect.height) {
-                            scaleB = rect.height / (h * scaleB);
-                            scale($(bg), hAlign, vAlign, h, scaleB, scaleH)
-                        }
-                        if (h * scaleB > 2 * rect.height) {
-                            scaleH = h * scaleB / (2 * rect.height);
-                            scale($(bg), hAlign, vAlign, h, scaleB, scaleH)
+                    if (rect.bottom > 0 && rect.top < window.innerHeight) {
+                        var positionY;
+                        switch (vAlign) {
+                            case 'top':
+                                positionY = 1.4*rect.height - h;
+                                $(backgrounds[i]).css({
+                                    backgroundPositionY: positionY + 'px'
+                                });
+                                break;
+                            case 'bottom':
+                                positionY = 1.4*rect.height - h;
+                                $(backgrounds[i]).css({
+                                    backgroundPositionY: -positionY + 'px'
+                                });
+                                break;
                         }
 
                         visible.push({
                             rect: rect,
-                            node: bg
+                            node: backgrounds[i]
                         });
                     }
                 }
+
             }
 
             cancelAnimationFrame(scheduled);
@@ -103,19 +97,7 @@ $(document).ready(function () {
             if (visible.length) {
                 scheduled = requestAnimationFrame(update);
             }
-        }
 
-        function update() {
-            pos = $(window).scrollTop();
-
-            for (var i = 0; i < visible.length; i++) {
-                var rect = visible[i].rect;
-                var node = visible[i].node;
-
-                var quot = Math.max(rect.bottom, 0) / (window.innerHeight + rect.height);
-
-                node.style.transform = 'translate3d(0, ' + (-50 * quot) + '%, 0)';
-            }
         }
 
         function checkAlign(align, array) {
@@ -125,47 +107,18 @@ $(document).ready(function () {
             return align;
         }
 
-        function scale(el, hAlign, vAlign, height, scaleB, scaleH) {
-            var left;
-            var top;
-            var h;
-            switch (hAlign) {
-                case 'left':
-                    left = 0;
-                    break;
-                case 'right':
-                    left = -(scaleB - 1) * 100;
-                    break;
-                default:
-                    left = -(scaleB - 1) / 2 * 100;
-            }
-            switch (vAlign) {
-                case 'top':
-                    h = scaleH * height * 2;
-                    top = (h - height) / 2;
-                    top = top + 'px';
-                    break;
-                case 'bottom':
-                    h = scaleH * height * 2;
-                    top = (h - height) / 2 + height;
-                    top = top + 'px';
-                    break;
-                default:
-                    top = '50%';
+        function update() {
+
+            for (var i = 0; i < visible.length; i++) {
+                var rect = visible[i].rect;
+                var node = visible[i].node;
+
+                var quot = Math.max(rect.bottom, 0) / (window.innerHeight + rect.height);
+
+                node.style.transform = 'translate3d(0, ' + (-50 * quot) + '%, 0)';
             }
 
-            el.css({
-                width: scaleB * 100 + '%',
-                left: left + '%',
-                backgroundPositionY: top
-            });
+        }
 
-            if (scaleH > 1) {
-                el.css({
-                    height: scaleH * 200 + '%'
-                });
-            }
-
-        };
     })();
 });
