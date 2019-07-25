@@ -27,7 +27,7 @@ $GLOBALS['TL_LANG']['tl_article']['hAlign']             = array(
     'Horizontale Ausrichtung in %',
     '0: oben | 50: mittig | 100: unten',
 );
-$GLOBALS['TL_LANG']['tl_article']['hAlign']             = array(
+$GLOBALS['TL_LANG']['tl_article']['vAlign']             = array(
     'Vertikale Ausrichtung in %',
     '0: links | 50: zentriert | 100: rechts',
 );

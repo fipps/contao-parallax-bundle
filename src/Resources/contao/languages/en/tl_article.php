@@ -23,18 +23,10 @@ $GLOBALS['TL_LANG']['tl_article']['deactivateForMobile']         = array(
     '',
 );
 $GLOBALS['TL_LANG']['tl_article']['hAlign']             = array(
-    'Horizontal align',
-    '',
+    'Horizontal Align in %',
+    '0: top | 50: center | 100: bottom',
 );
-
-//Options
-$GLOBALS['TL_LANG']['tl_article']['hAlignOptions'] = array(
-    'left'   => 'left',
-    'center' => 'center',
-    'right'  => 'right',
-);
-$GLOBALS['TL_LANG']['tl_article']['vAlignOptions'] = array(
-    'top'   => 'oben',
-    'middle' => 'mittig',
-    'bottom'  => 'unten',
+$GLOBALS['TL_LANG']['tl_article']['vAlign']             = array(
+    'Vertical Align in %',
+    '0: left | 50: center | 100: right',
 );

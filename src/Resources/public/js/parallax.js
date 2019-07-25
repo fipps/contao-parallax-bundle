@@ -15,10 +15,6 @@ $(document).ready(function () {
             var noMobile = el.find('figure').data('nomobile');
             var hAlign = checkAlign(el.find('figure').data('halign'));
             var vAlign = checkAlign(el.find('figure').data('valign'));
-            if (isNaN(valign)) {
-                vAlign = 50;
-            }
-
 
             bg.css({
                 backgroundImage: 'url(' + src + ')',
