@@ -52,6 +52,7 @@ class HooksListener
             $templateBackgroundImage = new \FrontendTemplate('ce_backgroundimage');
             \Controller::addImageToTemplate($templateBackgroundImage, $arrData);
             $templateBackgroundImage->hAlign = ($arrData['hAlign'] != '') ? $arrData['hAlign'] : 'center';
+            $templateBackgroundImage->vAlign = ($arrData['vAlign'] != '') ? $arrData['vAlign'] : 'center';
             $templateBackgroundImage->deactivateForMobile = ($arrData['deactivateForMobile'] != '') ? $arrData['deactivateForMobile'] : '0';
 
             $elements = $objTemplate->elements;
@@ -70,7 +71,7 @@ class HooksListener
             if ($objTemplate->isParallax == 1) {
                 $arrClasses[] = 'parallax';
             }
-            $objTemplate->class = implode(' ', $arrClasses);
+            $objTemplate->class .= ' '.implode(' ', $arrClasses);
         }
     }
 }

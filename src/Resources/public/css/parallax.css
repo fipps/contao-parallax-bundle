@@ -13,6 +13,7 @@
     min-height: 100vh;
     background: transparent;
     overflow: hidden;
+    margin: 0;
 }
 
 .has-responsive-background-image .bgImage {
@@ -28,6 +29,5 @@
 }
 
 .has-responsive-background-image.parallax .bgImage {
-    background-size: contain;
-    height:200%;
+    height:140%;
 }

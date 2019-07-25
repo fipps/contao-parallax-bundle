@@ -2,8 +2,9 @@
 			position: absolute;
 			width: 0;
 			height: 0;
-			overflow: hidden;" 
-		data-align="<?= $this->hAlign?>"
+			overflow: hidden;"
+        data-valign="<?= $this->vAlign?>"
+        data-halign="<?= $this->hAlign?>"
 		data-nomobile="<?= $this->deactivateForMobile?>">
 	<?php $this->insert('picture_default', $this->picture); ?>
 </figure>
