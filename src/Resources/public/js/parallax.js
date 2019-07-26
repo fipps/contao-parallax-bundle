@@ -66,7 +66,8 @@ $(document).ready(function () {
                         var faktor = (100 - vAlign) / 100;
                         var bgh = $(backgrounds[i]).height();
                         bgh = Math.max(bgh, imgh);
-                        var positionY = (bgh - rect.height) / 2 * faktor  ;
+                        var wh = $(window).height();
+                        var positionY = (bgh - rect.height) / 2 * faktor  * rect.height / $(window).height();
 
                         $(backgrounds[i]).css({
                             backgroundPositionY: positionY + 'px'
