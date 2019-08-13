@@ -1,7 +1,6 @@
 $(document).ready(function () {
 
     (function () {
-
         if (!('requestAnimationFrame' in window)) return;
 
         var backgrounds = [];
@@ -31,6 +30,10 @@ $(document).ready(function () {
                 return;
             }
 
+            if (el.hasClass('parallax')) {
+                setPosY(this, bg)
+            }
+
 
         });
 
@@ -39,55 +42,50 @@ $(document).ready(function () {
         var visible = [];
         var scheduled;
 
-        $(window).on('scroll resize', scroll);
+        $(window).on('scroll', scroll);
+        $(window).on('resize', resize);
 
-        scroll();
-        //Workaround to calculate correct position
         var pos = $(document).scrollTop();
-        $(document).scrollTop(pos + 10);
+        $(document).scrollTop(pos + 1);
+
+        function resize() {
+            $('.has-responsive-background-image').each(function () {
+                var el = $(this);
+                var src = el.find('img').prop('currentSrc');
+                var bg = el.find('.bgImage');
+
+                if (src != '') {
+                    bg.css({
+                        backgroundImage: 'url(' + src + ')'
+                    });
+                    if (el.hasClass('parallax')) {
+                        setPosY(this, bg);
+                        scroll();
+                    }
+                }
+            });
+        }
 
         function scroll() {
-
             visible.length = 0;
-
             for (var i = 0; i < backgrounds.length; i++) {
                 var parent = backgrounds[i].parentNode;
-                var src = $(parent).find('img').prop('currentSrc');
-
-                $(backgrounds[i]).css("background-image", "url('" + src + "')");
-
                 if ($(parent).hasClass('parallax')) {
                     var rect = parent.getBoundingClientRect();
-                    var img = $(parent).find('img');
-                    var vAlign = checkAlign($(parent).find('figure').data('valign'));
-                    var imgh = img.prop('naturalHeight');
 
                     if (rect.bottom > 0 && rect.top < window.innerHeight) {
-                        var faktor = (100 - vAlign) / 100;
-                        var bgh = $(backgrounds[i]).height();
-                        bgh = Math.max(bgh, imgh);
-                        var wh = $(window).height();
-                        var positionY = (bgh - rect.height) / 2 * faktor  * rect.height / $(window).height();
-
-                        $(backgrounds[i]).css({
-                            backgroundPositionY: positionY + 'px'
-                        });
-
                         visible.push({
                             rect: rect,
                             node: backgrounds[i]
                         });
                     }
                 }
-
             }
 
             cancelAnimationFrame(scheduled);
-
             if (visible.length) {
                 scheduled = requestAnimationFrame(update);
             }
-
         }
 
         function checkAlign(align) {
@@ -98,17 +96,25 @@ $(document).ready(function () {
             return align;
         }
 
-        function update() {
+        function setPosY(el, bg) {
+            var rect = el.getBoundingClientRect();
+            var vAlign = checkAlign($(el).find('figure').data('valign'));
+            var faktor = (100 - vAlign) / 100;
+            var quot = Math.max(rect.bottom, 0) / (window.innerHeight + rect.height);
+            var bgh = bg.height();
+            var posY = quot / 2 * bgh * faktor;
+            bg.css({
+                backgroundPositionY: posY + 'px'
+            })
+        }
 
+        function update() {
             for (var i = 0; i < visible.length; i++) {
                 var rect = visible[i].rect;
                 var node = visible[i].node;
-
                 var quot = Math.max(rect.bottom, 0) / (window.innerHeight + rect.height);
-
                 node.style.transform = 'translate3d(0, ' + (-50 * quot) + '%, 0)';
             }
-
         }
 
     })();
