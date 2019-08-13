@@ -23,6 +23,10 @@ $GLOBALS['TL_LANG']['tl_article']['deactivateForMobile'] = array(
     'Deactivate parralax effect for mobile devices',
     '',
 );
+$GLOBALS['TL_LANG']['tl_article']['scale'] = array(
+    'Scale',
+    'If the image is to small or too big: min: 140 | max: 200',
+);
 $GLOBALS['TL_LANG']['tl_article']['hAlign']              = array(
     'Horizontal Align in %',
     '0: left | 50: center | 100: right',

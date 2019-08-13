@@ -3,8 +3,9 @@
 			width: 0;
 			height: 0;
 			overflow: hidden;"
-        data-valign="<?= $this->vAlign?>"
-        data-halign="<?= $this->hAlign?>"
-		data-nomobile="<?= $this->deactivateForMobile?>">
-	<?php $this->insert('picture_default', $this->picture); ?>
+        data-valign="<?= $this->vAlign ?>"
+        data-halign="<?= $this->hAlign ?>"
+        data-scale="<?= $this->scale ?>"
+        data-nomobile="<?= $this->deactivateForMobile ?>">
+    <?php $this->insert('picture_default', $this->picture); ?>
 </figure>

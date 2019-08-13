@@ -12,8 +12,9 @@ $(document).ready(function () {
 
             var src = el.find('img').prop('currentSrc');
             var noMobile = el.find('figure').data('nomobile');
-            var hAlign = checkAlign(el.find('figure').data('halign'));
-            var vAlign = checkAlign(el.find('figure').data('valign'));
+            var hAlign = checkData(el, 'halign', 50);
+            var vAlign = checkData(el, 'valign', 50);
+            var scale = checkData(el, 'scale', 160);
 
             bg.css({
                 backgroundImage: 'url(' + src + ')',
@@ -31,6 +32,9 @@ $(document).ready(function () {
             }
 
             if (el.hasClass('parallax')) {
+                bg.css({
+                    height: scale + '%'
+                });
                 setPosY(this, bg)
             }
 
@@ -88,17 +92,18 @@ $(document).ready(function () {
             }
         }
 
-        function checkAlign(align) {
-            if (isNaN(align)) {
-                align = 50;
+        function checkData(el, data, def) {
+            var val = el.find('figure').data(data);
+            if (isNaN(val) || val=='') {
+                val = def;
             }
 
-            return align;
+            return val;
         }
 
         function setPosY(el, bg) {
             var rect = el.getBoundingClientRect();
-            var vAlign = checkAlign($(el).find('figure').data('valign'));
+            var vAlign = checkData($(el),'valign', 50);
             var faktor = (100 - vAlign) / 100;
             var quot = Math.max(rect.bottom, 0) / (window.innerHeight + rect.height);
             var bgh = bg.height();
