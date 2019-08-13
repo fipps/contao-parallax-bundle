@@ -17,7 +17,8 @@ $DCA['palettes']['default']        = str_replace('{syndication_legend', $newLege
 $DCA['palettes']['__selector__'][] = 'hasBackgroundImage';
 $DCA['palettes']['__selector__'][] = 'isParallax';
 
-$DCA['subpalettes']['hasBackgroundImage'] = 'singleSRC,size,hAlign,vAlign,isParallax, deactivateForMobile';
+$DCA['subpalettes']['hasBackgroundImage'] = 'singleSRC,size,hAlign,vAlign,isParallax';
+$DCA['subpalettes']['isParallax']         = 'deactivateForMobile, scale';
 
 // New fields
 $newFields = array(
@@ -73,7 +74,6 @@ $newFields = array(
             'rgxp'     => 'digit',
         ),
         'sql'       => "int(4) NOT NULL default '50'",
-
     ),
     'vAlign'              => array(
         'label'     => &$GLOBALS['TL_LANG']['tl_article']['vAlign'],
@@ -87,7 +87,6 @@ $newFields = array(
             'rgxp'     => 'digit',
         ),
         'sql'       => "int(4) NOT NULL default '50'",
-
     ),
     'isParallax'          => array(
         'label'     => &$GLOBALS['TL_LANG']['tl_article']['isParallax'],
@@ -95,6 +94,7 @@ $newFields = array(
         'inputType' => 'checkbox',
         'eval'      => array(
             'tl_class'       => 'clr w50 m12',
+            'submitOnChange' => true,
         ),
         'sql'       => "char(1) NOT NULL default ''",
     ),
@@ -103,9 +103,22 @@ $newFields = array(
         'exclude'   => true,
         'inputType' => 'checkbox',
         'eval'      => array(
-            'tl_class' => 'w50 m12',
+            'tl_class' => 'clr w50 m12',
         ),
         'sql'       => "char(1) NOT NULL default ''",
+    ),
+    'scale'               => array(
+        'label'     => &$GLOBALS['TL_LANG']['tl_article']['scale'],
+        'exclude'   => true,
+        'inputType' => 'text',
+        'default'   => 160,
+        'eval'      => array(
+            'tl_class' => 'w50',
+            'maxval'   => 200,
+            'minval'   => 140,
+            'rgxp'     => 'digit',
+        ),
+        'sql'       => "int(4) NOT NULL default '160'",
     ),
 
 );

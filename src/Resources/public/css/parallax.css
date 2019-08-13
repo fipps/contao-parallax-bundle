@@ -27,7 +27,3 @@
     z-index: -100;
     background-repeat: no-repeat;
 }
-
-.has-responsive-background-image.parallax .bgImage {
-    height:200%;
-}

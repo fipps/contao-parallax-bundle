@@ -23,6 +23,10 @@ $GLOBALS['TL_LANG']['tl_article']['deactivateForMobile'] = array(
     'Parallax Effekt gilt nicht für mobile Endgeräte',
     '',
 );
+$GLOBALS['TL_LANG']['tl_article']['scale'] = array(
+    'Skalierung',
+    'Sollte das Bild nicht vollflächig oder zu groß dargestellt werden: min: 140 | max: 200',
+);
 $GLOBALS['TL_LANG']['tl_article']['hAlign']              = array(
     'Horizontale Ausrichtung in %',
     '0: links | 50: zentriert | 100: rechts',

@@ -53,6 +53,7 @@ class HooksListener
             \Controller::addImageToTemplate($templateBackgroundImage, $arrData);
             $templateBackgroundImage->hAlign = ($arrData['hAlign'] != '') ? $arrData['hAlign'] : 'center';
             $templateBackgroundImage->vAlign = ($arrData['vAlign'] != '') ? $arrData['vAlign'] : 'center';
+            $templateBackgroundImage->scale = ($arrData['scale'] != '') ? $arrData['scale'] : '160';
             $templateBackgroundImage->deactivateForMobile = ($arrData['deactivateForMobile'] != '') ? $arrData['deactivateForMobile'] : '0';
 
             $elements = $objTemplate->elements;
