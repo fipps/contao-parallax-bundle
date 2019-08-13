@@ -105,7 +105,7 @@ $(document).ready(function () {
             var rect = el.getBoundingClientRect();
             var vAlign = checkData($(el),'valign', 50);
             var faktor = (100 - vAlign) / 100;
-            var quot = Math.max(rect.bottom, 0) / (window.innerHeight + rect.height);
+            var quot = Math.max(rect.bottom, window.innerHeight) / (window.innerHeight + rect.height);
             var bgh = bg.height();
             var posY = quot / 2 * bgh * faktor;
             bg.css({
