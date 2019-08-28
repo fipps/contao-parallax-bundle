@@ -23,7 +23,7 @@ $(document).ready(function () {
             });
             bg.addClass('bgImage');
 
-            bg.appendTo(el);
+            bg.prependTo(el);
             backgrounds.push(bg[0]);
 
             if (/Mobile|Android/.test(navigator.userAgent) && noMobile == 1) {
