@@ -22,18 +22,25 @@ class HooksListener
      */
     public function onGetPageLayout(\PageModel $objPage, \LayoutModel $objLayout, \PageRegular $objPageRegular)
     {
-        if (\Config::get('debugMode')) {
-            if (!$objLayout->addJQuery) {
-                $GLOBALS['TL_JAVASCRIPT'][] = 'assets/jquery/js/jquery.js|static';
+        $aCol = array('pid=?', 'hasBackgroundImage=?');
+        $aVal = array($objPage->id, 1);
+
+        // only include js and css if there are background images
+        $oArtice = \ArticleModel::findBy($aCol, $aVal);
+        if ($oArtice !== null) {
+            if (\Config::get('debugMode')) {
+                if (!$objLayout->addJQuery) {
+                    $GLOBALS['TL_JAVASCRIPT'][] = 'assets/jquery/js/jquery.js|static';
+                }
+                $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/fippsparallax/js/parallax.js|async';
+                $GLOBALS['TL_CSS'][]        = 'bundles/fippsparallax/css/parallax.css';
+            } else {
+                if (!$objLayout->addJQuery) {
+                    $GLOBALS['TL_JAVASCRIPT'][] = 'assets/jquery/js/jquery.min.js|static';
+                }
+                $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/fippsparallax/js/parallax.min.js|async';
+                $GLOBALS['TL_CSS'][]        = 'bundles/fippsparallax/css/parallax.min.css';
             }
-            $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/fippsparallax/js/parallax.js|async';
-            $GLOBALS['TL_CSS'][]        = 'bundles/fippsparallax/css/parallax.css';
-        } else {
-            if (!$objLayout->addJQuery) {
-                $GLOBALS['TL_JAVASCRIPT'][] = 'assets/jquery/js/jquery.min.js|static';
-            }
-            $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/fippsparallax/js/parallax.min.js|async';
-            $GLOBALS['TL_CSS'][]        = 'bundles/fippsparallax/css/parallax.min.css';
         }
     }
 
@@ -51,9 +58,9 @@ class HooksListener
             $arrData['singleSRC']    = $file->path;
             $templateBackgroundImage = new \FrontendTemplate('ce_backgroundimage');
             \Controller::addImageToTemplate($templateBackgroundImage, $arrData);
-            $templateBackgroundImage->hAlign = ($arrData['hAlign'] != '') ? $arrData['hAlign'] : 'center';
-            $templateBackgroundImage->vAlign = ($arrData['vAlign'] != '') ? $arrData['vAlign'] : 'center';
-            $templateBackgroundImage->scale = ($arrData['scale'] != '') ? $arrData['scale'] : '160';
+            $templateBackgroundImage->hAlign              = ($arrData['hAlign'] != '') ? $arrData['hAlign'] : 'center';
+            $templateBackgroundImage->vAlign              = ($arrData['vAlign'] != '') ? $arrData['vAlign'] : 'center';
+            $templateBackgroundImage->scale               = ($arrData['scale'] != '') ? $arrData['scale'] : '160';
             $templateBackgroundImage->deactivateForMobile = ($arrData['deactivateForMobile'] != '') ? $arrData['deactivateForMobile'] : '0';
 
             $elements = $objTemplate->elements;
