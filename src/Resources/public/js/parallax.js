@@ -10,7 +10,7 @@ $(document).ready(function () {
             var el = $(this);
             var bg = $('<div>');
 
-            var src = el.find('img').prop('currentSrc');
+            var src = (el.find('img').prop('currentSrc') || el.find('img').prop('src'));
             var noMobile = el.find('figure').data('nomobile');
             var hAlign = checkData(el, 'halign', 50);
             var vAlign = checkData(el, 'valign', 50);
@@ -22,7 +22,6 @@ $(document).ready(function () {
                 backgroundPositionY: vAlign + '%'
             });
             bg.addClass('bgImage');
-
             bg.prependTo(el);
             backgrounds.push(bg[0]);
 
@@ -37,8 +36,6 @@ $(document).ready(function () {
                 });
                 setPosY(this, bg)
             }
-
-
         });
 
         if (!backgrounds.length) return;
@@ -55,7 +52,7 @@ $(document).ready(function () {
         function resize() {
             $('.has-responsive-background-image').each(function () {
                 var el = $(this);
-                var src = el.find('img').prop('currentSrc');
+                var src = (el.find('img').prop('currentSrc') || el.find('img').prop('src'));
                 var bg = el.find('.bgImage');
 
                 if (src != '') {
